@@ -7,6 +7,7 @@ import { getIngredientsSelector } from '../../features/ingredients/ingredientsSl
 import {
   addRequestedOrder,
   getOrderByNumber,
+  getorderInfoRequestSelector,
   getOrderRequestSelector,
   getOrderSelector,
   getRequestedOrderSelector
@@ -18,13 +19,17 @@ import { getOrderByNumberApi } from '@api';
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
+  const orderNumber = useParams();
 
   /** TODO: взять переменные orderData и ingredients из стора */
   const orderData = useSelector(getRequestedOrderSelector);
   const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
+  const orderInfoRequest = useSelector(getorderInfoRequestSelector);
 
   useEffect(() => {
-    dispatch(getOrderByNumber(location.state?.orderNumber));
+    dispatch(
+      getOrderByNumber(location.state?.orderNumber || orderNumber.number)
+    );
   }, []);
 
   /* Готовим данные для отображения */
@@ -69,7 +74,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (!orderInfo || orderInfoRequest) {
     return <Preloader />;
   }
 

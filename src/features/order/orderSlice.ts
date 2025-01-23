@@ -36,6 +36,7 @@ type TOrderState = {
   requestedOrder: TOrder | undefined;
   name: string;
   orderRequest: boolean;
+  orderInfoRequest: boolean;
   loading: boolean;
   isOrderRequestError: string | null | undefined;
   error: string | null | undefined;
@@ -51,6 +52,7 @@ const initialState: TOrderState = {
   requestedOrder: undefined,
   name: '',
   orderRequest: false,
+  orderInfoRequest: false,
   loading: false,
   isOrderRequestError: null,
   error: null
@@ -80,7 +82,8 @@ const orderSlice = createSlice({
     }),
     getIsOrderRequestErrorSelector: (state) => state.isOrderRequestError,
     getOrdersSelector: (state) => state.orders,
-    getRequestedOrderSelector: (state) => state.requestedOrder
+    getRequestedOrderSelector: (state) => state.requestedOrder,
+    getorderInfoRequestSelector: (state) => state.orderInfoRequest
   },
   extraReducers: (builder) => {
     builder
@@ -132,15 +135,15 @@ const orderSlice = createSlice({
       })
       //getOrderByNumber
       .addCase(getOrderByNumber.pending, (state) => {
-        state.loading = true;
+        state.orderInfoRequest = true;
         state.error = null;
       })
       .addCase(getOrderByNumber.rejected, (state, action) => {
-        state.loading = false;
+        state.orderInfoRequest = false;
         state.error = action.error.message;
       })
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
-        state.loading = false;
+        state.orderInfoRequest = false;
         state.error = null;
         state.requestedOrder = action.payload;
       });
@@ -158,6 +161,7 @@ export const {
   getFeedSelector,
   getIsOrderRequestErrorSelector,
   getOrdersSelector,
-  getRequestedOrderSelector
+  getRequestedOrderSelector,
+  getorderInfoRequestSelector
 } = orderSlice.selectors;
 export const { clearOrderModalData, addRequestedOrder } = orderSlice.actions;

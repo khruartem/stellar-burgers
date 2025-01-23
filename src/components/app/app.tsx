@@ -22,33 +22,40 @@ import {
   ProtectedRoute
 } from '@components';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../services/store';
-import { getUser } from '../../features/user/userSlice';
+import { getUser, userDataSelector } from '../../features/user/userSlice';
+import { getFeeds, getOrders } from '../../features/order/orderSlice';
+import { getBurgerIngredients } from '../../features/ingredients/ingredientsSlice';
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
+  const backgroundLocation = location.state?.background;
+  const user = useSelector(userDataSelector);
 
   useEffect(() => {
-    dispatch(getUser());
+    //dispatch(getFeeds());
+    dispatch(getOrders());
+    dispatch(getBurgerIngredients());
+    if (!user) dispatch(getUser());
   }, []);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={location.state?.background || location}>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
       </Routes>
-      <Routes location={location.state?.background || location}>
+      <Routes location={backgroundLocation || location}>
         <Route path='/feed'>
           <Route index element={<Feed />} />
           <Route path=':number' element={<OrderInfo />} />
         </Route>
       </Routes>
-      <Routes location={location.state?.background || location}>
+      <Routes location={backgroundLocation || location}>
         <Route
           path='/login'
           element={
@@ -82,7 +89,7 @@ const App = () => {
           }
         />
       </Routes>
-      <Routes location={location.state?.background || location}>
+      <Routes location={backgroundLocation || location}>
         <Route path='/profile'>
           <Route
             index
@@ -106,42 +113,48 @@ const App = () => {
         </Route>
       </Routes>
 
-      <Routes>
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-      </Routes>
-      <Routes>
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal
-              title={location.state?.orderNumberFormatted}
-              onClose={() => navigate('/feed')}
-            >
-              <OrderInfo />
-            </Modal>
-          }
-        />
-      </Routes>
-      <Routes>
-        <Route
-          path='profile/orders/:number'
-          element={
-            <Modal
-              title={location.state?.orderNumberFormatted}
-              onClose={() => navigate('/profile/orders')}
-            >
-              <OrderInfo />
-            </Modal>
-          }
-        />
-      </Routes>
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal
+                title={location.state?.orderNumberFormatted}
+                onClose={() => navigate('/feed')}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='profile/orders/:number'
+            element={
+              <Modal
+                title={location.state?.orderNumberFormatted}
+                onClose={() => navigate('/profile/orders')}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
       <Routes location={{ pathname: '*' }}>
         <Route path='*' element={<NotFound404 />} />
       </Routes>
