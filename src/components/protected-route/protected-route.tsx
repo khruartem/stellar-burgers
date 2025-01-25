@@ -1,5 +1,5 @@
 import { Preloader } from '@ui';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 import { Navigate, useLocation } from 'react-router-dom';
 import {
   isAuthCheckingSelector,
@@ -14,18 +14,31 @@ export const ProtectedRoute = ({
   const isAuthChecking = useSelector(isAuthCheckingSelector);
   const user = useSelector(userDataSelector);
   const location = useLocation();
+  const prevState = location.state;
 
   if (isAuthChecking) {
     return <Preloader />;
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate replace to='/login' state={{ from: location }} />;
+    return (
+      <Navigate replace to='/login' state={{ from: location, prevState }} />
+    );
   }
 
   if (onlyUnAuth && user) {
     const from = location.state?.from || { pathname: '/' };
-    return <Navigate replace to={from} />;
+    return (
+      <Navigate
+        replace
+        to={from}
+        state={{
+          background: location.state?.prevState?.background,
+          orderNumberFormatted: location.state?.prevState?.orderNumberFormatted,
+          orderNumber: location.state?.prevState?.orderNumber
+        }}
+      />
+    );
   }
 
   return children;

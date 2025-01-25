@@ -1,9 +1,9 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 
 import styles from './feed-info.module.css';
 
 import { FeedInfoUIProps, HalfColumnProps, TColumnProps } from './type';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../services/store';
 import { Link } from 'react-router-dom';
 import { isAuthCheckedSelector } from '../../../features/user/userSlice';
 

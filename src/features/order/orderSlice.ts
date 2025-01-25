@@ -36,6 +36,7 @@ type TOrderState = {
   requestedOrder: TOrder | undefined;
   name: string;
   orderRequest: boolean;
+  ordersRequest: boolean;
   orderInfoRequest: boolean;
   loading: boolean;
   isOrderRequestError: string | null | undefined;
@@ -52,6 +53,7 @@ const initialState: TOrderState = {
   requestedOrder: undefined,
   name: '',
   orderRequest: false,
+  ordersRequest: false,
   orderInfoRequest: false,
   loading: false,
   isOrderRequestError: null,
@@ -80,6 +82,7 @@ const orderSlice = createSlice({
       total: state.totalFeeds,
       totalToday: state.totalTodayFeeds
     }),
+    getOrdersRequestSelector: (state) => state.ordersRequest,
     getIsOrderRequestErrorSelector: (state) => state.isOrderRequestError,
     getOrdersSelector: (state) => state.orders,
     getRequestedOrderSelector: (state) => state.requestedOrder,
@@ -105,15 +108,15 @@ const orderSlice = createSlice({
       })
       //getOrders
       .addCase(getOrders.pending, (state) => {
-        state.loading = true;
+        state.ordersRequest = true;
         state.isOrderRequestError = null;
       })
       .addCase(getOrders.rejected, (state, action) => {
-        state.loading = false;
+        state.ordersRequest = false;
         state.isOrderRequestError = action.error.message;
       })
       .addCase(getOrders.fulfilled, (state, action) => {
-        state.loading = false;
+        state.ordersRequest = false;
         state.isOrderRequestError = null;
         state.orders = action.payload;
       })
@@ -162,6 +165,7 @@ export const {
   getIsOrderRequestErrorSelector,
   getOrdersSelector,
   getRequestedOrderSelector,
-  getorderInfoRequestSelector
+  getorderInfoRequestSelector,
+  getOrdersRequestSelector
 } = orderSlice.selectors;
 export const { clearOrderModalData, addRequestedOrder } = orderSlice.actions;

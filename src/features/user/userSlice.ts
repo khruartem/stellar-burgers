@@ -4,6 +4,7 @@ import {
   getUserApi,
   loginUserApi,
   logoutApi,
+  refreshToken,
   registerUserApi,
   resetPasswordApi,
   TLoginData,
@@ -11,7 +12,7 @@ import {
   updateUserApi
 } from '@api';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
@@ -23,6 +24,13 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async ({ email, password }: TLoginData) =>
     loginUserApi({ email, password }).then((data) => {
+      // console.log(localStorage.getItem('refreshToken'));
+      // if (localStorage.getItem('refreshToken')) {
+      //   refreshToken();
+      // } else {
+      //   setCookie('accessToken', data.accessToken);
+      //   localStorage.setItem('refreshToken', data.refreshToken);
+      // }
       setCookie('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return data.user;
@@ -50,7 +58,11 @@ export const updateUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk('user/logout', async () =>
-  logoutApi()
+  logoutApi().then(() => {
+    localStorage.clear;
+    deleteCookie('accessToken');
+    console.log(localStorage.getItem('refreshToken'));
+  })
 );
 
 export interface TUserState {

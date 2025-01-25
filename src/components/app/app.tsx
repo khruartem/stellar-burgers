@@ -22,22 +22,18 @@ import {
   ProtectedRoute
 } from '@components';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { getUser, userDataSelector } from '../../features/user/userSlice';
-import { getFeeds, getOrders } from '../../features/order/orderSlice';
 import { getBurgerIngredients } from '../../features/ingredients/ingredientsSlice';
 
 const App = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const user = useSelector(userDataSelector);
 
   useEffect(() => {
-    //dispatch(getFeeds());
-    dispatch(getOrders());
     dispatch(getBurgerIngredients());
     if (!user) dispatch(getUser());
   }, []);
@@ -48,14 +44,10 @@ const App = () => {
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-      </Routes>
-      <Routes location={backgroundLocation || location}>
         <Route path='/feed'>
           <Route index element={<Feed />} />
           <Route path=':number' element={<OrderInfo />} />
         </Route>
-      </Routes>
-      <Routes location={backgroundLocation || location}>
         <Route
           path='/login'
           element={
@@ -88,8 +80,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-      </Routes>
-      <Routes location={backgroundLocation || location}>
         <Route path='/profile'>
           <Route
             index
@@ -99,17 +89,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route path='orders'>
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <ProfileOrders />
-                </ProtectedRoute>
-              }
-            />
-            <Route path=':number' element={<OrderInfo />} />
-          </Route>
+          <Route
+            path='orders'
+            element={
+              <ProtectedRoute>
+                <ProfileOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='orders/:number'
+            element={
+              <ProtectedRoute>
+                <OrderInfo />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
 
@@ -123,10 +118,6 @@ const App = () => {
               </Modal>
             }
           />
-        </Routes>
-      )}
-      {backgroundLocation && (
-        <Routes>
           <Route
             path='/feed/:number'
             element={
@@ -138,19 +129,17 @@ const App = () => {
               </Modal>
             }
           />
-        </Routes>
-      )}
-      {backgroundLocation && (
-        <Routes>
           <Route
             path='profile/orders/:number'
             element={
-              <Modal
-                title={location.state?.orderNumberFormatted}
-                onClose={() => navigate('/profile/orders')}
-              >
-                <OrderInfo />
-              </Modal>
+              <ProtectedRoute>
+                <Modal
+                  title={location.state?.orderNumberFormatted}
+                  onClose={() => navigate('/profile/orders')}
+                >
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>
