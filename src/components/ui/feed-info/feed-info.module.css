@@ -32,3 +32,8 @@
 .content {
   text-align: left;
 }
+
+.link {
+  text-align: center;
+  color: white;
+}
