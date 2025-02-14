@@ -3,7 +3,7 @@ import {
   getFeedsApi,
   orderBurgerApi,
   getOrdersApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
@@ -43,7 +43,7 @@ type TOrderState = {
   error: string | null | undefined;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   feeds: [],
   orders: [],
   totalFeeds: 0,
@@ -120,7 +120,7 @@ const orderSlice = createSlice({
         state.isOrderRequestError = null;
         state.orders = action.payload;
       })
-      //orderBurgers
+      //orderBurger
       .addCase(orderBurger.pending, (state) => {
         state.orderRequest = true;
         state.error = null;

@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../utils/burger-api';
 import {
   createAsyncThunk,
   createSlice,
@@ -27,7 +27,7 @@ type TIngredientState = {
   error: string | null | undefined;
 };
 
-const initialState: TIngredientState = {
+export const initialState: TIngredientState = {
   ingredients: [],
   buns: [],
   mains: [],
@@ -42,12 +42,12 @@ const initialState: TIngredientState = {
   error: null
 };
 
-const prepareFunction = (ingredient: TIngredient) => {
+export const prepareFunction = (ingredient: TIngredient) => {
   const id = nanoid();
   return { payload: { ...ingredient, id } };
 };
 
-const ingredientSlice = createSlice({
+export const ingredientSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {

@@ -10,8 +10,8 @@ import {
   TLoginData,
   TRegisterData,
   updateUserApi
-} from '@api';
-import { TUser } from '@utils-types';
+} from '../../utils/burger-api';
+import { TUser } from '../../utils/types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const registerUser = createAsyncThunk(
@@ -24,13 +24,6 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async ({ email, password }: TLoginData) =>
     loginUserApi({ email, password }).then((data) => {
-      // console.log(localStorage.getItem('refreshToken'));
-      // if (localStorage.getItem('refreshToken')) {
-      //   refreshToken();
-      // } else {
-      //   setCookie('accessToken', data.accessToken);
-      //   localStorage.setItem('refreshToken', data.refreshToken);
-      // }
       setCookie('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return data.user;
@@ -61,7 +54,6 @@ export const logoutUser = createAsyncThunk('user/logout', async () =>
   logoutApi().then(() => {
     localStorage.clear;
     deleteCookie('accessToken');
-    console.log(localStorage.getItem('refreshToken'));
   })
 );
 
@@ -72,7 +64,7 @@ export interface TUserState {
   error: string | unknown | null;
 }
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuthChecked: false,
   isLoading: false,
   user: null,
@@ -167,7 +159,7 @@ export const userSlice = createSlice({
       state.isAuthChecked = false;
       state.error = action.error.message;
     });
-    builder.addCase(logoutUser.fulfilled, (state, action) => {
+    builder.addCase(logoutUser.fulfilled, (state) => {
       state.isLoading = false;
       state.isAuthChecked = false;
       state.error = null;
