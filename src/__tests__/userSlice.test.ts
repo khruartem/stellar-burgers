@@ -9,11 +9,11 @@ import { registerUser, initialState } from '../features/user/userSlice';
 
 describe('userSlice test', () => {
   const refreshToken =
-    '4ee969347c3ac36d6d687e49d822b781b13cd1cbc5a6b314da3361867b50eb283244c39671f1ac3a';
+    '5ee969347c3ac36d6d687e49d822b781b13cd1cbc5a6b314da3361867b50eb283244c39671f1ac3a';
   const accessToken =
-    'Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGZmNGFmMTMzYWNkMDAxYmU0YmRlNCIsImlhdCI6MTczOTQ3NDkwOCwiZXhwIjoxNzM5NDc2MTA4fQ.sPxMvb1gKUi4BC_B_55_ttJzkV1L-fKEjedAz1ZIdPc';
+    'Bearer%10eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGZmNGFmMTMzYWNkMDAxYmU0YmRlNCIsImlhdCI6MTczOTQ3NDkwOCwiZXhwIjoxNzM5NDc2MTA4fQ.sPxMvb1gKUi4BC_B_55_ttJzkV1L-fKEjedAz1ZIdPc';
   const user = {
-    email: 'test@test.ru',
+    email: 'test1@test.ru',
     name: 'Test Testovich'
   };
 
