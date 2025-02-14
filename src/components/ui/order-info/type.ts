@@ -1,9 +1,7 @@
 import { TIngredient } from '@utils-types';
-import { Location } from 'react-router-dom';
 
 export type OrderInfoUIProps = {
   orderInfo: TOrderInfo;
-  location?: Location;
 };
 
 type TOrderInfo = {

@@ -1,37 +1,22 @@
-import { FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 
 import styles from './feed-info.module.css';
 
 import { FeedInfoUIProps, HalfColumnProps, TColumnProps } from './type';
-import { useSelector } from '../../../services/store';
-import { Link } from 'react-router-dom';
-import { isAuthCheckedSelector } from '../../../features/user/userSlice';
 
 export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
   ({ feed, readyOrders, pendingOrders }) => {
     const { total, totalToday } = feed;
-    const isAuthChecked = useSelector(isAuthCheckedSelector);
 
     return (
       <section>
         <div className={styles.columns}>
-          {!isAuthChecked ? (
-            <div className={`text text_type_main-medium ${styles.link}`}>
-              <span>
-                Для просмотра готовых заказов и заказов в работе необходимо{' '}
-                <Link to={'/profile'}>авторизоваться</Link>
-              </span>
-            </div>
-          ) : (
-            <>
-              <HalfColumn
-                orders={readyOrders}
-                title={'Готовы'}
-                textColor={'blue'}
-              />
-              <HalfColumn orders={pendingOrders} title={'В работе'} />
-            </>
-          )}
+          <HalfColumn
+            orders={readyOrders}
+            title={'Готовы'}
+            textColor={'blue'}
+          />
+          <HalfColumn orders={pendingOrders} title={'В работе'} />
         </div>
         <Column title={'Выполнено за все время'} content={total} />
         <Column title={'Выполнено за сегодня'} content={totalToday} />

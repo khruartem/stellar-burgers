@@ -1,11 +1,9 @@
 .wrap {
-  margin: auto;
+  margin: 0 auto;
   width: 640px;
 }
 .number {
   text-align: center;
-  display: block;
-  width: 100%;
 }
 
 .status {
