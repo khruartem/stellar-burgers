@@ -1,6 +1,6 @@
 import { rootReducer } from '../services/store';
 
-describe('rootReducer initialization', () => {
+describe('rootReducer initialization test', () => {
   test('should return the initial state', () => {
     const initialState = {
       ingredients: {

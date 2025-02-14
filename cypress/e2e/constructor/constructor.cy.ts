@@ -8,13 +8,6 @@ beforeEach(() => {
   cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
   cy.intercept('GET', '/api/auth/user', { fixture: 'user.json' });
   cy.intercept('POST', '/api/orders', { fixture: 'order.json' });
-
-  // cy.window().then((win) =>
-  //   win.localStorage.setItem(
-  //     'refreshToken',
-  //     `${cy.fixture('token').then((token) => token.refreshToken)}`
-  //   )
-  // );
 });
 
 describe('add ingredients', () => {

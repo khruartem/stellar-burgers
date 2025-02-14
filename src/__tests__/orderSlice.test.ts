@@ -18,8 +18,8 @@ describe('orderSlice tests', () => {
     ],
     status: 'done',
     name: 'Краторный люминесцентный метеоритный бургер',
-    createdAt: '2025-02-14T20:14:11.684Z',
-    updatedAt: '2025-02-14T20:14:13.092Z',
+    createdAt: '2025-02-14T21:14:11.684Z',
+    updatedAt: '2025-02-14T21:14:13.092Z',
     number: 68425
   };
 

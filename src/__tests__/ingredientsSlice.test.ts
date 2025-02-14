@@ -1,4 +1,3 @@
-//import { describe } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 import {
   reducer as ingredientReducer,
@@ -8,7 +7,6 @@ import {
   getBurgerIngredients,
   initialState
 } from '../features/ingredients/ingredientsSlice';
-import { error } from 'console';
 
 describe('ingredientsSlice tests', () => {
   const mockStore = configureStore({
