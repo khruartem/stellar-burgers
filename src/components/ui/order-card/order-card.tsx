@@ -9,13 +9,20 @@ import styles from './order-card.module.css';
 
 import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
+import { useDispatch } from 'react-redux';
+import { getOrderByNumber } from '../../../features/order/orderSlice';
+import { AppDispatch } from '../../../services/store';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
   ({ orderInfo, maxIngredients, locationState }) => (
     <Link
       to={orderInfo.number.toString()}
       relative='path'
-      state={locationState}
+      state={{
+        ...locationState,
+        orderNumberFormatted: `#${String(orderInfo.number).padStart(6, '0')}`,
+        orderNumber: orderInfo.number
+      }}
       className={`p-6 mb-4 mr-2 ${styles.order}`}
     >
       <div className={styles.order_info}>
